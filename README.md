@@ -6,6 +6,8 @@ This is the utility script used in the Cryptocurrency Financial Spreadsheet:
 
 https://docs.google.com/spreadsheets/d/1lnE260-F7TSs6onegSVYgRAP0ZZeuUy2YsfO2Ww_eJY/edit?usp=sharing
 
+[Cryptocurrency Financial Spreadsheet](screenshot.png)
+
 The easiest way to use it is to make a copy of the spreadsheet above.
 
 ## Using
