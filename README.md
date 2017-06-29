@@ -1,6 +1,6 @@
 # Cryptocurrency Spreadsheet Utils
 
-Useful cryptocurrency tools (like getting the current price) for Google Spreadsheets.
+Useful cryptocurrency tools (like getting the current price, of Bitcoin, Ethereum) for Google Spreadsheets.
 
 This is the utility script used in the Cryptocurrency Financial Spreadsheet:
 
