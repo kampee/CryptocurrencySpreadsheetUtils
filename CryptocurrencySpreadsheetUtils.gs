@@ -1,8 +1,9 @@
 /**
-    Cryptocurrency Spreadsheet Utils
+    Cryptocurrency Financial Tracker Utils
+
+    v0.2 - 8/24/2017 - Migrated API to coinbin.org
+    v0.1 - 6/29/2017 - Started project
     
-    v0.1
-    6/29/2017
     by Brad Jasper
     
     A simple set of utilites for working with cryptocurrencies in Google Sheets.
@@ -19,33 +20,31 @@
     
         =getCoinPrice("LTC")       
      
-    Almost every crypto currency should work because data is fetched from coinmarketcap.com API,
+    Almost every crypto currency should work because data is fetched from coinbin.org API,
     which has many and updates pretty regularly. Data is cached for 25 minutes.
         
-    Requires Google Sheets permission because we're requesting an external service.
-    A version without this permission exists here, but doesn't cache and is much slower:
-        https://docs.google.com/spreadsheets/d/170ps_Xpo3fVsVi8niV8rSLJnZ5GFsV7GCEx6IpHNvtA/edit?usp=sharing
-        
-    You should use this version if you can as it's much friendlier to coinmarketcap.com's API.
-    
     Questions or comments email contact@bradjasper.com or @bradjasper
     
     Happy trading—be safe out there!
 **/
 
 var cache = CacheService.getScriptCache();
-var exchangeUrl = "https://api.coinmarketcap.com/v1/ticker/";
+var exchangeUrl = "https://coinbin.org/coins";
 
 function getCoinPrice(symbol) {
-  var coin = getCoinInfo(symbol);
+  if (!symbol) return null;
+  
+  var coin = getCoinInfo(symbol.toLowerCase());
   if (!coin) {
     return null;
   }
-  return parseFloat(coin.price_usd);
+  return parseFloat(coin.usd);
 }
 
 function getCoinInfo(symbol) {
   if (!symbol) return;
+  
+  cache.remove(symbol);
   
   Logger.log("Getting coin info for " + symbol);
   
@@ -76,25 +75,36 @@ function getCachedCoin(symbol) {
   }  
 }
 
+Array.prototype.chunk = function ( n ) {
+    if ( !this.length ) {
+        return [];
+    }
+    return [ this.slice( 0, n ) ].concat( this.slice(n).chunk(n) );
+};
+
 function updateExchangeCache() {
   Logger.log("Updating exchange cached information");
  
   var response = UrlFetchApp.fetch(exchangeUrl);
   var content = response.getContentText();
+  
   try {
     var data = JSON.parse(content);
   } catch (e) {
     Logger.log("Error while parsing response from exchange: " + content);
   }
-
-  var cachedCoins = {};
-  for (var i in data) {
-    var coin = data[i];
-    cachedCoins[coin.symbol] = JSON.stringify(coin);
-  }
   
-  if (cachedCoins) {
-    Logger.log("Caching " + Object.keys(cachedCoins).length + " exchange prices");
+  var coins = data.coins;
+  
+  if (coins) {
+    
+    Logger.log("Caching " + Object.keys(coins).length + " exchange prices");
+    
+    var cachedCoins = {};
+    for (var ticker in coins) {
+      cachedCoins[ticker] = JSON.stringify(coins[ticker]);
+    }
+    
     cache.putAll(cachedCoins);
   } else {
     Logger.log("No cached coins found");
