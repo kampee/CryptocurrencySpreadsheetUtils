@@ -44,8 +44,6 @@ function getCoinPrice(symbol) {
 function getCoinInfo(symbol) {
   if (!symbol) return;
   
-  cache.remove(symbol);
-  
   Logger.log("Getting coin info for " + symbol);
   
   var coin = getCachedCoin(symbol);
