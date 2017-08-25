@@ -24,15 +24,9 @@ Litecoin would be
 
     =getCoinPrice("LTC")       
  
-Almost every crypto currency should work because data is fetched from coinmarketcap.com API,
+Almost every crypto currency should work because data is fetched from coinbin.org API,
 which has many and updates pretty regularly. Data is cached for 25 minutes.
     
-Requires Google Sheets permission because we're requesting an external service.
-A version without this permission exists here, but doesn't cache and is much slower:
-    https://docs.google.com/spreadsheets/d/170ps_Xpo3fVsVi8niV8rSLJnZ5GFsV7GCEx6IpHNvtA/edit?usp=sharing
-    
-You should use this version if you can as it's much friendlier to coinmarketcap.com's API.
-
 Questions or comments email contact@bradjasper.com or @bradjasper
 
 Happy trading—be safe out there!
